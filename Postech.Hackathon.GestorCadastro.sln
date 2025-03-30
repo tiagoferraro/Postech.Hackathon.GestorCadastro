@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.Api", "Postech.Hackathon.GestorCadastro.Api\Postech.Hackathon.GestorCadastro.Api.csproj", "{E22EC88E-5330-4C7D-9047-89247BEEA213}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.Domain", "Postech.Hackathon.GestorCadastro.Domain\Postech.Hackathon.GestorCadastro.Domain.csproj", "{8A1F44A7-5A60-4AF4-8351-B313A509DFB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.Infra", "Postech.Hackathon.GestorCadastro.Infra\Postech.Hackathon.GestorCadastro.Infra.csproj", "{A995BF4D-55F5-4A64-90B2-6D5990D6DB73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.Ioc", "Postech.Hackathon.GestorCadastro.Ioc\Postech.Hackathon.GestorCadastro.Ioc.csproj", "{7E91A889-DF7E-470E-B6CF-EF60965DC4C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.Application", "Postech.Hackathon.GestorCadastro.Application\Postech.Hackathon.GestorCadastro.Application.csproj", "{22E314CA-C972-44A2-89F3-D130FE234C6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{3E67D510-D45D-44EA-B64C-C32AB3BCF3B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{3EE60ABF-4601-40BA-8D36-863333C89224}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{92E3B93D-CF9C-4DDE-A5E2-AA45FCEB2E7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - tests", "5 - tests", "{D7EA6175-880B-4E0C-9ECF-05ACB34A0EF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.Test", "Postech.Hackathon.GestorCadastro.Test\Postech.Hackathon.GestorCadastro.Test.csproj", "{312E10BA-A195-4EAB-A18A-FCF019A2ABA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech.Hackathon.GestorCadastro.TestIntegration", "Postech.Hackathon.GestorCadastro.TestIntegration\Postech.Hackathon.GestorCadastro.TestIntegration.csproj", "{7769F5CE-450C-4DF0-B2D2-89F62761D01B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E22EC88E-5330-4C7D-9047-89247BEEA213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22EC88E-5330-4C7D-9047-89247BEEA213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22EC88E-5330-4C7D-9047-89247BEEA213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22EC88E-5330-4C7D-9047-89247BEEA213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A1F44A7-5A60-4AF4-8351-B313A509DFB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A1F44A7-5A60-4AF4-8351-B313A509DFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A1F44A7-5A60-4AF4-8351-B313A509DFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A1F44A7-5A60-4AF4-8351-B313A509DFB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A995BF4D-55F5-4A64-90B2-6D5990D6DB73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A995BF4D-55F5-4A64-90B2-6D5990D6DB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A995BF4D-55F5-4A64-90B2-6D5990D6DB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A995BF4D-55F5-4A64-90B2-6D5990D6DB73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E91A889-DF7E-470E-B6CF-EF60965DC4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E91A889-DF7E-470E-B6CF-EF60965DC4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E91A889-DF7E-470E-B6CF-EF60965DC4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E91A889-DF7E-470E-B6CF-EF60965DC4C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E314CA-C972-44A2-89F3-D130FE234C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E314CA-C972-44A2-89F3-D130FE234C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E314CA-C972-44A2-89F3-D130FE234C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E314CA-C972-44A2-89F3-D130FE234C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{312E10BA-A195-4EAB-A18A-FCF019A2ABA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312E10BA-A195-4EAB-A18A-FCF019A2ABA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312E10BA-A195-4EAB-A18A-FCF019A2ABA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312E10BA-A195-4EAB-A18A-FCF019A2ABA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7769F5CE-450C-4DF0-B2D2-89F62761D01B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7769F5CE-450C-4DF0-B2D2-89F62761D01B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7769F5CE-450C-4DF0-B2D2-89F62761D01B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7769F5CE-450C-4DF0-B2D2-89F62761D01B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E22EC88E-5330-4C7D-9047-89247BEEA213} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{8A1F44A7-5A60-4AF4-8351-B313A509DFB8} = {3EE60ABF-4601-40BA-8D36-863333C89224}
+		{A995BF4D-55F5-4A64-90B2-6D5990D6DB73} = {92E3B93D-CF9C-4DDE-A5E2-AA45FCEB2E7D}
+		{7E91A889-DF7E-470E-B6CF-EF60965DC4C5} = {92E3B93D-CF9C-4DDE-A5E2-AA45FCEB2E7D}
+		{22E314CA-C972-44A2-89F3-D130FE234C6F} = {3E67D510-D45D-44EA-B64C-C32AB3BCF3B0}
+		{312E10BA-A195-4EAB-A18A-FCF019A2ABA3} = {D7EA6175-880B-4E0C-9ECF-05ACB34A0EF1}
+		{7769F5CE-450C-4DF0-B2D2-89F62761D01B} = {D7EA6175-880B-4E0C-9ECF-05ACB34A0EF1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3020DF75-19A9-4C24-A8C5-0F7CA115B044}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Postech.Hackathon.GestorCadastro.Infra": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

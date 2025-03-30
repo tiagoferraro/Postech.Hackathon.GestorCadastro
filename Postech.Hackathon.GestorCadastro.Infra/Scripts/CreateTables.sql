@@ -1,0 +1,19 @@
+-- Criar tabela de Usuários
+CREATE TABLE Usuarios (
+    Id UNIQUEIDENTIFIER PRIMARY KEY,
+    Nome NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    CPF NVARCHAR(11) NOT NULL UNIQUE,
+    Senha NVARCHAR(100) NOT NULL,
+    DataNascimento DATE NOT NULL,
+    Telefone NVARCHAR(20) NULL
+);
+
+-- Criar tabela de Médicos
+CREATE TABLE Medicos (
+    IdMedico UNIQUEIDENTIFIER PRIMARY KEY,
+    IdUsuario UNIQUEIDENTIFIER NOT NULL,
+    IdEspecialidade UNIQUEIDENTIFIER NOT NULL,
+    CRM NVARCHAR(20) NOT NULL UNIQUE,
+    FOREIGN KEY (IdUsuario) REFERENCES Usuarios(Id)
+); 
