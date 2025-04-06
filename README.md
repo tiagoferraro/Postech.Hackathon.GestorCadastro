@@ -1,82 +1,34 @@
-# Postech.Hackathon.GestorCadastro
+# Postech.Hackathon.Agenda
 
-## Sobre o Projeto
+Sistema de gerenciamento de agenda desenvolvido durante o Hackathon da Postech.
 
-Este projeto implementa um serviço de autorização utilizando JWT (JSON Web Tokens) para autenticação e autorização de usuários.
+## Estrutura do Projeto
+
+O projeto está organizado nas seguintes camadas:
+
+- **Api**: Camada de apresentação, responsável por expor os endpoints da aplicação
+- **Application**: Camada de aplicação, contendo os casos de uso e regras de negócio
+- **Domain**: Camada de domínio, contendo as entidades e regras de domínio
+- **Infra**: Camada de infraestrutura, responsável pela persistência e serviços externos
+- **Ioc**: Camada de injeção de dependência, responsável pela configuração do container IoC
+- **Test**: Projeto de testes unitários
+- **TestIntegration**: Projeto de testes de integração
 
 ## Tecnologias Utilizadas
 
-- .NET 9.0
+- .NET 7.0
 - ASP.NET Core
-- JWT (JSON Web Tokens)
-- Arquitetura em Camadas (Clean Architecture)
+- Entity Framework Core
+- xUnit
+- Docker
 
-## Funcionalidades
+## Como Executar
 
-- Registro de usuários
-- Login de usuários
-- Validação de tokens JWT
-- Obtenção de informações do usuário autenticado
+1. Clone o repositório
+2. Execute `dotnet restore`
+3. Execute `dotnet build`
+4. Execute `dotnet run --project Postech.Hackathon.Agenda.Api`
 
-## Configuração
+## Como Executar os Testes
 
-### Configurações do JWT
-
-As configurações do JWT estão no arquivo `appsettings.json`:
-
-```json
-"JwtSettings": {
-  "SecretKey": "sua_chave_secreta_muito_segura_com_pelo_menos_32_caracteres",
-  "Issuer": "Postech.Hackathon.GestorCadastro",
-  "Audience": "Postech.Hackathon.Clients",
-  "ExpirationInMinutes": 60,
-  "RefreshTokenExpirationInDays": 7
-}
-```
-
-**Importante**: Para ambientes de produção, substitua a chave secreta por uma chave forte e segura, e considere armazená-la em variáveis de ambiente ou no Azure Key Vault.
-
-## Endpoints da API
-
-### Autenticação
-
-- **POST /api/auth/register**: Registra um novo usuário
-  - Corpo da requisição:
-    ```json
-    {
-      "username": "usuario",
-      "email": "usuario@exemplo.com",
-      "password": "senha123",
-      "confirmPassword": "senha123"
-    }
-    ```
-
-- **POST /api/auth/login**: Autentica um usuário
-  - Corpo da requisição:
-    ```json
-    {
-      "username": "usuario",
-      "password": "senha123"
-    }
-    ```
-
-- **GET /api/auth/validate?token={token}**: Valida um token JWT
-
-- **GET /api/auth/user**: Obtém informações do usuário autenticado (requer autenticação)
-
-## Como Usar
-
-### Autenticação
-
-1. Registre um usuário usando o endpoint `/api/auth/register`
-2. Faça login usando o endpoint `/api/auth/login`
-3. Use o token JWT retornado no cabeçalho `Authorization` das requisições subsequentes:
-   ```
-   Authorization: Bearer {seu_token_jwt}
-   ```
-
-## Segurança
-
-- Os tokens JWT têm validade de 60 minutos por padrão
-- As senhas são armazenadas como hash com salt para maior segurança
-- Tokens de atualização (refresh tokens) permitem renovar a sessão sem precisar fazer login novamente
+Execute `dotnet test` na raiz do projeto para executar todos os testes.

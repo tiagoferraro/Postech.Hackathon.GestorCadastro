@@ -3,4 +3,114 @@
 GET {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
+### Autenticação
+
+### Login com email e senha
+POST {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Autenticador/login
+Content-Type: application/json
+
+{
+    "email": "string",
+    "senha": "string"
+}
+
+### Login com CPF e senha
+POST {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Autenticador/login/cpf
+Content-Type: application/json
+
+{
+    "cpf": "string",
+    "senha": "string"
+}
+
+### Login com CRM e senha
+POST {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Autenticador/login/crm
+Content-Type: application/json
+
+{
+    "crm": "string",
+    "senha": "string"
+}
+
+### Validar Token
+GET {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Autenticador/ValidarToken?token=string
+
+### Obter Dados do Usuário Logado
+GET {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Autenticador/DadosUsuarioLogado
+Authorization: Bearer {token}
+
+### Alterar Senha
+POST {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Autenticador/alterar-senha
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "senhaAtual": "string",
+    "novaSenha": "string"
+}
+
+### Pessoa
+
+### Cadastrar Pessoa
+POST {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Pessoa/Cadastrar
+Content-Type: application/json
+
+{
+    "nome": "string",
+    "email": "string",
+    "senha": "string",
+    "cpf": "string",
+    "tipoUsuario": 0,
+    "medico": {
+        "crm": "string",
+        "idEspecialidade": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+}
+
+### Alterar Pessoa
+PUT {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Pessoa/Alterar
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "nome": "string",
+    "email": "string",
+    "senha": "string",
+    "cpf": "string",
+    "tipoUsuario": 0,
+    "medico": {
+        "crm": "string",
+        "idEspecialidade": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+}
+
+### Especialidade
+
+### Obter Todas as Especialidades
+GET {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Especialidade
+
+### Obter Especialidade por ID
+GET {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Especialidade/{id}
+
+### Criar Especialidade
+POST {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Especialidade
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "nome": "string",
+    "descricao": "string"
+}
+
+### Atualizar Especialidade
+PUT {{Postech.Hackathon.GestorCadastro.Api_HostAddress}}/api/Especialidade/{id}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "nome": "string",
+    "descricao": "string"
+}
+
 ###

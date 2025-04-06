@@ -15,67 +15,28 @@ public class AutenticadorController(IAutenticacaoService _authService) : Control
     [HttpPost("login")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        try
-        {
-            var response = await _authService.LoginAsync(request);
-            return Ok(response);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return this.ApiUnauthorized("Falha na autenticação", ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return this.ApiBadRequest("Requisição inválida", ex.Message);
-        }
+        var response = await _authService.LoginAsync(request);
+        return Ok(response);
     }
 
     [HttpPost("login/cpf")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> LoginPorCpf([FromBody] LoginPorCpfRequest request)
     {
-        try
-        {
-            var response = await _authService.LoginPorCpfAsync(request);
-            return Ok(response);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return this.ApiUnauthorized("Falha na autenticação", ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return this.ApiBadRequest("Requisição inválida", ex.Message);
-        }
+        var response = await _authService.LoginPorCpfAsync(request);
+        return Ok(response);
     }
 
     [HttpPost("login/crm")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> LoginPorCrm([FromBody] LoginPorCrmRequest request)
     {
-        try
-        {
-            var response = await _authService.LoginPorCrmAsync(request);
-            return Ok(response);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return this.ApiUnauthorized("Falha na autenticação", ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return this.ApiBadRequest("Requisição inválida", ex.Message);
-        }
+        var response = await _authService.LoginPorCrmAsync(request);
+        return Ok(response);
     }
 
     [HttpGet("ValidarToken")]
@@ -89,8 +50,6 @@ public class AutenticadorController(IAutenticacaoService _authService) : Control
     [HttpGet("DadosUsuarioLogado")]
     [Authorize]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DadosUsuarioLogado()
     {
         var email = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
@@ -118,33 +77,15 @@ public class AutenticadorController(IAutenticacaoService _authService) : Control
     [HttpPost("alterar-senha")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AlterarSenha([FromBody] AlterarSenhaRequest request)
     {
-        try
+        var email = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+        if (string.IsNullOrEmpty(email))
         {
-            var email = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
-            if (string.IsNullOrEmpty(email))
-            {
-                return this.ApiUnauthorized("Usuário não autenticado");
-            }
+            return this.ApiUnauthorized("Usuário não autenticado");
+        }
 
-            await _authService.AlterarSenhaAsync(email, request);
-            return Ok();
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return this.ApiUnauthorized("Falha na autenticação", ex.Message);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return this.ApiNotFound("Usuário não encontrado", ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return this.ApiBadRequest("Requisição inválida", ex.Message);
-        }
+        await _authService.AlterarSenhaAsync(email, request);
+        return Ok();
     }
 }
