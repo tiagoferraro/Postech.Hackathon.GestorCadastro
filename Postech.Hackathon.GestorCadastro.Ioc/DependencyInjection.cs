@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Postech.Hackathon.GestorCadastro.Application.Interfaces.Services;
@@ -16,6 +17,9 @@ public static class DependencyInjection
         // Configurações
         services.Configure<JwtSettings>(options => configuration.GetSection("JwtSettings").Bind(options));
         services.Configure<DatabaseSettings>(options => configuration.GetSection("DatabaseSettings").Bind(options));
+
+        // Cache
+        services.AddMemoryCache();
 
         // Repositórios
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();

@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Postech.Hackathon.GestorCadastro.Api.Settings;
 using Postech.Hackathon.GestorCadastro.Ioc;
+using Prometheus;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +15,31 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
+
+builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
+{
+    // Filter out instrumentation of the Prometheus scraping endpoint.
+    options.Filter = ctx => ctx.Request.Path != "/metrics";
+});
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(b =>
+    {
+        b.AddService("PostechFase2");
+    })
+    .WithTracing(b => b
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(b => b
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddProcessInstrumentation()
+        .AddPrometheusExporter());
+
+builder.Services.UseHttpClientMetrics();
+
 
 // Adicionar serviços
 builder.Services.AddServices(builder.Configuration);
@@ -56,5 +86,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapMetrics();
+
+app.UseMetricServer();
+app.UseHttpMetrics();
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 await app.RunAsync();

@@ -26,6 +26,13 @@ public class MedicoRepository : IMedicoRepository
         return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { CRM = crm });
     }
 
+    public async Task<IEnumerable<Medico>> ObterPorEspecialidadeAsync(Guid especialidadeId)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        const string sql = "SELECT * FROM Medico WHERE EspecialidadeId = @EspecialidadeId";
+        return await connection.QueryAsync<Medico>(sql, new { EspecialidadeId = especialidadeId });
+    }
+
     public async Task<Medico> CreateAsync(Medico medico)
     {
         using var connection = new SqlConnection(_connectionString);

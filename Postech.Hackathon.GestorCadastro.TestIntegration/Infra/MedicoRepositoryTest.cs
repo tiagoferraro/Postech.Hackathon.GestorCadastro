@@ -114,6 +114,20 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
     }
 
     [Fact]
+    public async Task ObterPorCrmAsync_DeveRetornarNullQuandoNaoExiste()
+    {
+        // Arrange
+        await _fixture.CleanupDatabaseAsync();
+        var crmInexistente = "99999";
+
+        // Act
+        var result = await _fixture.Repository.ObterPorCrmAsync(crmInexistente);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
     public async Task UpdateAsync_DeveAtualizarMedicoExistente()
     {
         // Arrange
@@ -155,4 +169,34 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         Assert.Equal(medicoAtualizado.EspecialidadeId, result.EspecialidadeId);
         Assert.Equal(medicoAtualizado.ValorConsulta, result.ValorConsulta);
     }
+
+    [Fact]
+    public async Task ListarPorEspecialidadeAsync_DeveRetornarMedicosDaEspecialidade()
+    {
+        // Arrange
+        await _fixture.CleanupDatabaseAsync();
+        var usuario = await _fixture.UsuarioRepository.CreateAsync(_fixture.TestUsuario);
+        var especialidade1 = await _fixture.EspecialidadeRepository.CreateAsync(_fixture.TestEspecialidade);
+        
+        var especialidade2 = new Especialidade(
+            "Dermatologia",
+            "Especialidade médica que se ocupa do diagnóstico e tratamento das doenças que acometem a pele");
+        await _fixture.EspecialidadeRepository.CreateAsync(especialidade2);
+        
+        var medico1 = new Medico("12345", usuario.UsuarioId, especialidade1.EspecialidadeId, 150.00m);
+        var medico2 = new Medico("54321", usuario.UsuarioId, especialidade2.EspecialidadeId, 200.00m);
+        
+        await _fixture.Repository.CreateAsync(medico1);
+        await _fixture.Repository.CreateAsync(medico2);
+
+        // Act
+        var result = await _fixture.Repository.ObterPorEspecialidadeAsync(especialidade1.EspecialidadeId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Single(result);
+        Assert.Equal(medico1.MedicoId, result.First().MedicoId);
+    }
+
+ 
 } 

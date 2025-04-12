@@ -7,4 +7,5 @@ public interface IMedicoService
 {
     Task<MedicoResponse> CadastrarAsync(Guid idUsuario, MedicoRequest request);
     Task<MedicoResponse> AlterarAsync(Guid idUsuario, MedicoRequest request);
+    Task<IEnumerable<PessoaResponse>> ObterPorEspecialidadeAsync(Guid especialidadeId);
 } 

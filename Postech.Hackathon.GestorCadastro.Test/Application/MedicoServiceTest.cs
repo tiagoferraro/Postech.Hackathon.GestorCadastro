@@ -1,7 +1,10 @@
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Postech.Hackathon.GestorCadastro.Application.DTO.Request;
+using Postech.Hackathon.GestorCadastro.Application.DTO.Response;
 using Postech.Hackathon.GestorCadastro.Application.Services;
 using Postech.Hackathon.GestorCadastro.Domain.Entities;
+using Postech.Hackathon.GestorCadastro.Domain.Enum;
 using Postech.Hackathon.GestorCadastro.Infra.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -12,12 +15,16 @@ namespace Postech.Hackathon.GestorCadastro.Test.Application;
 public class MedicoServiceTest
 {
     private readonly Mock<IMedicoRepository> _mockMedicoRepository;
+    private readonly Mock<IUsuarioRepository> _mockUsuarioRepository;
+    private readonly IMemoryCache _memoryCache;
     private readonly MedicoService _medicoService;
     
     public MedicoServiceTest()
     {
         _mockMedicoRepository = new Mock<IMedicoRepository>();
-        _medicoService = new MedicoService(_mockMedicoRepository.Object);
+        _mockUsuarioRepository = new Mock<IUsuarioRepository>();
+        _memoryCache = new MemoryCache(new MemoryCacheOptions());
+        _medicoService = new MedicoService(_mockMedicoRepository.Object, _mockUsuarioRepository.Object, _memoryCache);
     }
 
     [Fact]
@@ -159,4 +166,63 @@ public class MedicoServiceTest
         await Assert.ThrowsAsync<InvalidOperationException>(() => _medicoService.AlterarAsync(idUsuario, request));
         _mockMedicoRepository.Verify(x => x.UpdateAsync(It.IsAny<Medico>()), Times.Never);
     }
+
+    [Fact]
+    public async Task ObterPorEspecialidadeAsync_QuandoExisteNoCache_RetornaDoCache()
+    {
+        // Arrange
+        var especialidadeId = Guid.NewGuid();
+        var pessoas = new List<PessoaResponse>
+        {
+            new PessoaResponse(
+                Id: Guid.NewGuid(),
+                Nome: "Dr. Teste 1",
+                Email: "teste1@example.com",
+                CPF: "12345678901",
+                TipoUsuario: ETipoUsuario.Medico,
+                DataCriacao: DateTime.Now,
+                UltimoLogin: null,
+                Medico: new MedicoResponse("12345", especialidadeId, 150.00m)
+            )
+        };
+
+        var cacheKey = $"medicos_especialidade_{especialidadeId}";
+        _memoryCache.Set(cacheKey, pessoas);
+
+        // Act
+        var resultado = await _medicoService.ObterPorEspecialidadeAsync(especialidadeId);
+
+        // Assert
+        Assert.NotNull(resultado);
+        Assert.Single(resultado);
+        _mockMedicoRepository.Verify(x => x.ObterPorEspecialidadeAsync(especialidadeId), Times.Never);
+    }
+
+    [Fact]
+    public async Task CadastrarAsync_QuandoSucesso_RemoveCacheDaEspecialidade()
+    {
+        // Arrange
+        var idUsuario = Guid.NewGuid();
+        var especialidadeId = Guid.NewGuid();
+        var request = new MedicoRequest 
+        { 
+            CRM = "123456",
+            EspecialidadeId = especialidadeId,
+            ValorConsulta = 150.00m
+        };
+
+        var cacheKey = $"medicos_especialidade_{especialidadeId}";
+        _memoryCache.Set(cacheKey, new List<PessoaResponse>());
+
+        _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
+            .ReturnsAsync(null as Medico);
+
+        // Act
+        await _medicoService.CadastrarAsync(idUsuario, request);
+
+        // Assert
+        Assert.False(_memoryCache.TryGetValue(cacheKey, out _));
+    }
+
+ 
 } 
