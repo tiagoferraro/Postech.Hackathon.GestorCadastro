@@ -196,7 +196,7 @@ public class PessoaServiceTest
             .ReturnsAsync(null as Usuario);
         
         _mockMedicoService.Setup(x => x.CadastrarAsync(It.IsAny<Guid>(), request.Medico))
-            .ReturnsAsync(new MedicoResponse(request.Medico.CRM, request.Medico.EspecialidadeId));
+            .ReturnsAsync(new MedicoResponse(request.Medico.CRM, request.Medico.EspecialidadeId, request.Medico.ValorConsulta));
         
         // Act
         var resultado = await _pessoaService.CadastrarAsync(request);
@@ -400,7 +400,7 @@ public class PessoaServiceTest
             .ReturnsAsync(null as Usuario);
         
         _mockMedicoService.Setup(x => x.AlterarAsync(usuarioExistente.UsuarioId, request.Medico))
-            .ReturnsAsync(new MedicoResponse(request.Medico.CRM, request.Medico.EspecialidadeId));
+            .ReturnsAsync(new MedicoResponse(request.Medico.CRM, request.Medico.EspecialidadeId, request.Medico.ValorConsulta));
         
         // Act
         var resultado = await _pessoaService.AlterarAsync(request);

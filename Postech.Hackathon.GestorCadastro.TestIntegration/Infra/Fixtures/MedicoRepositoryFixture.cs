@@ -89,6 +89,7 @@ public class MedicoRepositoryFixture : IAsyncLifetime
                     UsuarioId UNIQUEIDENTIFIER NOT NULL,
                     EspecialidadeId UNIQUEIDENTIFIER NOT NULL,
                     CRM VARCHAR(20) NOT NULL,
+                    ValorConsulta DECIMAL(10,2) NOT NULL,
                     FOREIGN KEY (UsuarioId) REFERENCES Usuario(UsuarioId),
                     FOREIGN KEY (EspecialidadeId) REFERENCES Especialidade(EspecialidadeId)
                 );

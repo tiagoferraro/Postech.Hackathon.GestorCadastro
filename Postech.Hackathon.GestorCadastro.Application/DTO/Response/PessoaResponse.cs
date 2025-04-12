@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Postech.Hackathon.GestorCadastro.Application.DTO.Response;
 
-public record MedicoResponse(string CRM, Guid IdEspecialidade);
+public record MedicoResponse(string CRM, Guid IdEspecialidade, decimal ValorConsulta);
 
 public record PessoaResponse(
     Guid Id, 

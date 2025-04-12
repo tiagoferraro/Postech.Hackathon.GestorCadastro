@@ -28,7 +28,8 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         var medico = new Medico(
             "12345",
             usuario.UsuarioId,
-            especialidade.EspecialidadeId);
+            especialidade.EspecialidadeId,
+            150.00m);
 
         // Act
         var result = await _fixture.Repository.CreateAsync(medico);
@@ -39,6 +40,7 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         Assert.Equal(medico.CRM, result.CRM);
         Assert.Equal(medico.UsuarioId, result.UsuarioId);
         Assert.Equal(medico.EspecialidadeId, result.EspecialidadeId);
+        Assert.Equal(medico.ValorConsulta, result.ValorConsulta);
     }
 
     [Fact]
@@ -52,7 +54,8 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         var medico = new Medico(
             "12345",
             usuario.UsuarioId,
-            especialidade.EspecialidadeId);
+            especialidade.EspecialidadeId,
+            150.00m);
         
         await _fixture.Repository.CreateAsync(medico);
 
@@ -65,6 +68,7 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         Assert.Equal(medico.CRM, result.CRM);
         Assert.Equal(medico.UsuarioId, result.UsuarioId);
         Assert.Equal(medico.EspecialidadeId, result.EspecialidadeId);
+        Assert.Equal(medico.ValorConsulta, result.ValorConsulta);
     }
 
     [Fact]
@@ -92,7 +96,8 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         var medico = new Medico(
             "12345",
             usuario.UsuarioId,
-            especialidade.EspecialidadeId);
+            especialidade.EspecialidadeId,
+            150.00m);
         
         await _fixture.Repository.CreateAsync(medico);
 
@@ -105,6 +110,7 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         Assert.Equal(medico.CRM, result.CRM);
         Assert.Equal(medico.UsuarioId, result.UsuarioId);
         Assert.Equal(medico.EspecialidadeId, result.EspecialidadeId);
+        Assert.Equal(medico.ValorConsulta, result.ValorConsulta);
     }
 
     [Fact]
@@ -118,7 +124,8 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         var medico = new Medico(
             "12345",
             usuario.UsuarioId,
-            especialidade.EspecialidadeId);
+            especialidade.EspecialidadeId,
+            150.00m);
         
         await _fixture.Repository.CreateAsync(medico);
         
@@ -131,7 +138,8 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         var medicoAtualizado = new Medico(
             "54321",
             usuario.UsuarioId,
-            novaEspecialidade.EspecialidadeId);
+            novaEspecialidade.EspecialidadeId,
+            200.00m);
 
         // Usar reflexão para definir o MedicoId já que é privado
         typeof(Medico).GetProperty("MedicoId")?.SetValue(medicoAtualizado, medico.MedicoId);
@@ -145,5 +153,6 @@ public class MedicoRepositoryTest : IClassFixture<MedicoRepositoryFixture>
         Assert.Equal(medicoAtualizado.CRM, result.CRM);
         Assert.Equal(medicoAtualizado.UsuarioId, result.UsuarioId);
         Assert.Equal(medicoAtualizado.EspecialidadeId, result.EspecialidadeId);
+        Assert.Equal(medicoAtualizado.ValorConsulta, result.ValorConsulta);
     }
 } 

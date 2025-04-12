@@ -17,5 +17,6 @@ CREATE TABLE Medicos (
     IdUsuario UNIQUEIDENTIFIER NOT NULL,
     IdEspecialidade UNIQUEIDENTIFIER NOT NULL,
     CRM NVARCHAR(20) NOT NULL UNIQUE,
+    ValorConsulta DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (IdUsuario) REFERENCES Usuario(UsuarioId)
 ); 

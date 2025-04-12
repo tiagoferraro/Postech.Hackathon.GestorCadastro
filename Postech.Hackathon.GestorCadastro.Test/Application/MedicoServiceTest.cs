@@ -28,7 +28,8 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            EspecialidadeId = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid(),
+            ValorConsulta = 150.00m
         };
         
         _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
@@ -52,13 +53,15 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            EspecialidadeId = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid(),
+            ValorConsulta = 150.00m
         };
         
         var medicoExistente = new Medico(
             request.CRM,
             Guid.NewGuid(),
-            request.EspecialidadeId);
+            request.EspecialidadeId,
+            150.00m);
         
         _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
             .ReturnsAsync(medicoExistente);
@@ -76,13 +79,15 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            EspecialidadeId = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid(),
+            ValorConsulta = 150.00m
         };
         
         var medicoExistente = new Medico(
             "654321",
             idUsuario,
-            Guid.NewGuid());
+            Guid.NewGuid(),
+            150.00m);
         
         _mockMedicoRepository.Setup(x => x.ObterPorIdAsync(idUsuario))
             .ReturnsAsync(medicoExistente);
@@ -108,7 +113,8 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            EspecialidadeId = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid(),
+            ValorConsulta = 150.00m
         };
         
         _mockMedicoRepository.Setup(x => x.ObterPorIdAsync(idUsuario))
@@ -127,18 +133,21 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            EspecialidadeId = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid(),
+            ValorConsulta = 150.00m
         };
         
         var medicoExistente = new Medico(
             "654321",
             idUsuario,
-            Guid.NewGuid());
+            Guid.NewGuid(),
+            150.00m);
         
         var outroMedico = new Medico(
             request.CRM,
             Guid.NewGuid(),
-            request.EspecialidadeId);
+            request.EspecialidadeId,
+            150.00m);
         
         _mockMedicoRepository.Setup(x => x.ObterPorIdAsync(idUsuario))
             .ReturnsAsync(medicoExistente);

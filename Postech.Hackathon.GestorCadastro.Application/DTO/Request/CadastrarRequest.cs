@@ -28,4 +28,7 @@ public class MedicoRequest
     public string CRM { get; set; }
     [Required]
     public Guid EspecialidadeId { get; set; }
+    [Required]
+    [Range(0.01, double.MaxValue, ErrorMessage = "O valor da consulta deve ser maior que zero")]
+    public decimal ValorConsulta { get; set; }
 }

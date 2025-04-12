@@ -30,8 +30,8 @@ public class MedicoRepository : IMedicoRepository
     {
         using var connection = new SqlConnection(_connectionString);
         const string sql = @"
-            INSERT INTO Medico (MedicoId, UsuarioID , EspecialidadeId, CRM)
-            VALUES (@MedicoId,  @UsuarioID , @EspecialidadeId, @CRM);
+            INSERT INTO Medico (MedicoId, UsuarioID , EspecialidadeId, CRM, ValorConsulta)
+            VALUES (@MedicoId,  @UsuarioID , @EspecialidadeId, @CRM, @ValorConsulta);
             SELECT * FROM Medico WHERE MedicoId = @MedicoId";
         
         return await connection.QueryFirstAsync<Medico>(sql, medico);
@@ -43,7 +43,8 @@ public class MedicoRepository : IMedicoRepository
         const string sql = @"
             UPDATE Medico
             SET CRM = @CRM, 
-                EspecialidadeId = @EspecialidadeId
+                EspecialidadeId = @EspecialidadeId,
+                ValorConsulta = @ValorConsulta
             WHERE MedicoId = @MedicoId;
             SELECT * FROM Medico WHERE MedicoId = @MedicoId";
         

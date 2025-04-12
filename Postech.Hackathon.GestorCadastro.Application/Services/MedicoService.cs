@@ -16,10 +16,10 @@ public class MedicoService(IMedicoRepository _medicoRepository) : IMedicoService
             throw new InvalidOperationException("CRM já está em uso");
         }
 
-        var medico = new Medico(request.CRM, idUsuario, request.EspecialidadeId);
+        var medico = new Medico(request.CRM, idUsuario, request.EspecialidadeId, request.ValorConsulta);
         await _medicoRepository.CreateAsync(medico);
 
-        return new MedicoResponse(medico.CRM, medico.EspecialidadeId);
+        return new MedicoResponse(medico.CRM, medico.EspecialidadeId, medico.ValorConsulta);
     }
 
     public async Task<MedicoResponse> AlterarAsync(Guid idUsuario, MedicoRequest request)
@@ -32,9 +32,9 @@ public class MedicoService(IMedicoRepository _medicoRepository) : IMedicoService
             throw new InvalidOperationException("CRM já está em uso");
         }
 
-        medico.AtualizarDados(request.CRM, request.EspecialidadeId);
+        medico.AtualizarDados(request.CRM, request.EspecialidadeId, request.ValorConsulta);
         await _medicoRepository.UpdateAsync(medico);
 
-        return new MedicoResponse(request.CRM, request.EspecialidadeId);
+        return new MedicoResponse(request.CRM, request.EspecialidadeId, request.ValorConsulta);
     }
 } 

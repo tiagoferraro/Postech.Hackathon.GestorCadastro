@@ -271,7 +271,7 @@ public class AutenticacaoServiceTest
             // Arrange
             var request = new LoginPorCrmRequest("12345", "Senha123!");
             var usuario = new Usuario("Teste Medico", "medico@teste.com", "Senha123!", "12345678901", ETipoUsuario.Medico);
-            var medico = new Medico("12345", usuario.UsuarioId, Guid.NewGuid());
+            var medico = new Medico("12345", usuario.UsuarioId, Guid.NewGuid(), 150.00m);
             
             _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
                 .ReturnsAsync(medico);
@@ -297,7 +297,7 @@ public class AutenticacaoServiceTest
             // Arrange
             var request = new LoginPorCrmRequest("12345", "SenhaErrada");
             var usuario = new Usuario("Teste Medico", "medico@teste.com", "Senha123!", "12345678901", ETipoUsuario.Medico);
-            var medico = new Medico("12345", usuario.UsuarioId, Guid.NewGuid());
+            var medico = new Medico("12345", usuario.UsuarioId, Guid.NewGuid(), 150.00m);
             
             _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
                 .ReturnsAsync(medico);
@@ -329,7 +329,7 @@ public class AutenticacaoServiceTest
             // Arrange
             var request = new LoginPorCrmRequest("12345", "Senha123!");
             var usuario = new Usuario("Teste Paciente", "paciente@teste.com", "Senha123!", "12345678901", ETipoUsuario.Paciente);
-            var medico = new Medico("12345", usuario.UsuarioId, Guid.NewGuid());
+            var medico = new Medico("12345", usuario.UsuarioId, Guid.NewGuid(), 150.00m);
             
             _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
                 .ReturnsAsync(medico);
