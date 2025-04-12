@@ -5,7 +5,7 @@ namespace Postech.Hackathon.GestorCadastro.Domain.Entities;
 
 public class Usuario
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
+    public Guid UsuarioId { get; private set; } = Guid.NewGuid();
     public string Nome { get; private set; }
     public string Email { get; private set; }
     public string SenhaHash { get; private set; }

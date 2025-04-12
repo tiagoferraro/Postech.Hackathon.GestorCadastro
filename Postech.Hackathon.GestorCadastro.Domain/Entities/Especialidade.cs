@@ -4,7 +4,7 @@ namespace Postech.Hackathon.GestorCadastro.Domain.Entities;
 
 public class Especialidade
 {
-    public Guid IdEspecialidade { get; private set; } = Guid.NewGuid();
+    public Guid EspecialidadeId { get; private set; } = Guid.NewGuid();
     public string Nome { get; private set; }
     public string Descricao { get; private set; }
     public DateTime DataCriacao { get; private set; }

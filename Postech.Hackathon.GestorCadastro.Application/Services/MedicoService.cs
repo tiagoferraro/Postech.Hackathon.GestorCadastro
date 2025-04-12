@@ -16,10 +16,10 @@ public class MedicoService(IMedicoRepository _medicoRepository) : IMedicoService
             throw new InvalidOperationException("CRM já está em uso");
         }
 
-        var medico = new Medico(request.CRM, idUsuario, request.IdEspecialidade);
+        var medico = new Medico(request.CRM, idUsuario, request.EspecialidadeId);
         await _medicoRepository.CreateAsync(medico);
 
-        return new MedicoResponse(medico.CRM, medico.IdEspecialidade);
+        return new MedicoResponse(medico.CRM, medico.EspecialidadeId);
     }
 
     public async Task<MedicoResponse> AlterarAsync(Guid idUsuario, MedicoRequest request)
@@ -27,14 +27,14 @@ public class MedicoService(IMedicoRepository _medicoRepository) : IMedicoService
         var medico = await _medicoRepository.ObterPorIdAsync(idUsuario) ?? throw new KeyNotFoundException("Médico não encontrado");
 
         var existingMedicoByCrm = await _medicoRepository.ObterPorCrmAsync(request.CRM);
-        if (existingMedicoByCrm != null && existingMedicoByCrm.IdMedico != medico.IdMedico)
+        if (existingMedicoByCrm != null && existingMedicoByCrm.MedicoId != medico.MedicoId)
         {
             throw new InvalidOperationException("CRM já está em uso");
         }
 
-        medico.AtualizarDados(request.CRM, request.IdEspecialidade);
+        medico.AtualizarDados(request.CRM, request.EspecialidadeId);
         await _medicoRepository.UpdateAsync(medico);
 
-        return new MedicoResponse(medico.CRM, medico.IdEspecialidade);
+        return new MedicoResponse(request.CRM, request.EspecialidadeId);
     }
 } 

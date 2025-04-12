@@ -27,5 +27,5 @@ public class MedicoRequest
     [Required]
     public string CRM { get; set; }
     [Required]
-    public Guid IdEspecialidade { get; set; }
+    public Guid EspecialidadeId { get; set; }
 }

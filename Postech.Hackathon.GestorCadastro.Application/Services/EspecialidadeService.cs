@@ -18,7 +18,7 @@ public class EspecialidadeService : IEspecialidadeService
     {
         var especialidades = await _especialidadeRepository.ObterTodasAsync();
         return especialidades.Select(e => new EspecialidadeResponse(
-            e.IdEspecialidade,
+            e.EspecialidadeId,
             e.Nome,
             e.Descricao,
             e.DataCriacao
@@ -32,7 +32,7 @@ public class EspecialidadeService : IEspecialidadeService
             return null;
 
         return new EspecialidadeResponse(
-            especialidade.IdEspecialidade,
+            especialidade.EspecialidadeId,
             especialidade.Nome,
             especialidade.Descricao,
             especialidade.DataCriacao
@@ -45,25 +45,11 @@ public class EspecialidadeService : IEspecialidadeService
         var especialidadeCriada = await _especialidadeRepository.CreateAsync(especialidade);
 
         return new EspecialidadeResponse(
-            especialidadeCriada.IdEspecialidade,
+            especialidadeCriada.EspecialidadeId,
             especialidadeCriada.Nome,
             especialidadeCriada.Descricao,
             especialidadeCriada.DataCriacao
         );
     }
 
-    public async Task<EspecialidadeResponse> AtualizarAsync(Guid id, string nome, string descricao)
-    {
-        var especialidade = await _especialidadeRepository.ObterPorIdAsync(id)
-            ?? throw new KeyNotFoundException($"Especialidade com ID {id} não encontrada");
-
-        var especialidadeAtualizada = await _especialidadeRepository.UpdateAsync(especialidade);
-
-        return new EspecialidadeResponse(
-            especialidadeAtualizada.IdEspecialidade,
-            especialidadeAtualizada.Nome,
-            especialidadeAtualizada.Descricao,
-            especialidadeAtualizada.DataCriacao
-        );
-    }
 } 

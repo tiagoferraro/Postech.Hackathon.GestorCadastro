@@ -7,5 +7,4 @@ public interface IEspecialidadeService
     Task<IEnumerable<EspecialidadeResponse>> ObterTodasAsync();
     Task<EspecialidadeResponse?> ObterPorIdAsync(Guid id);
     Task<EspecialidadeResponse> CriarAsync(string nome, string descricao);
-    Task<EspecialidadeResponse> AtualizarAsync(Guid id, string nome, string descricao);
 } 

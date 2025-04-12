@@ -10,10 +10,7 @@ public class EspecialidadeRepository : IEspecialidadeRepository
 {
     private readonly string _connectionString;
 
-    public EspecialidadeRepository(IOptions<DatabaseSettings> databaseSettings)
-    {
-        _connectionString = databaseSettings.Value.ConnectionString;
-    }
+    public EspecialidadeRepository(IOptions<DatabaseSettings> databaseSettings) => _connectionString = databaseSettings.Value.ConnectionString;
 
     public async Task<IEnumerable<Especialidade>> ObterTodasAsync()
     {
@@ -21,7 +18,7 @@ public class EspecialidadeRepository : IEspecialidadeRepository
         await connection.OpenAsync();
 
         var sql = @"
-            SELECT IdEspecialidade, Nome, Descricao, DataCriacao, IndAtivo
+            SELECT EspecialidadeId, Nome, Descricao, DataCriacao, IndAtivo
             FROM Especialidade
             WHERE IndAtivo = 1
             ORDER BY Nome";
@@ -29,17 +26,17 @@ public class EspecialidadeRepository : IEspecialidadeRepository
         return await connection.QueryAsync<Especialidade>(sql);
     }
 
-    public async Task<Especialidade?> ObterPorIdAsync(Guid id)
+    public async Task<Especialidade?> ObterPorIdAsync(Guid EspecialidadeId)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
 
         var sql = @"
-            SELECT IdEspecialidade, Nome, Descricao, DataCriacao, IndAtivo
+            SELECT EspecialidadeId, Nome, Descricao, DataCriacao, IndAtivo
             FROM Especialidade
-            WHERE IdEspecialidade = @Id AND IndAtivo = 1";
+            WHERE EspecialidadeId = @EspecialidadeId AND IndAtivo = 1";
 
-        return await connection.QueryFirstOrDefaultAsync<Especialidade>(sql, new { Id = id });
+        return await connection.QueryFirstOrDefaultAsync<Especialidade>(sql, new { EspecialidadeId = EspecialidadeId });
     }
 
     public async Task<Especialidade> CreateAsync(Especialidade especialidade)
@@ -48,23 +45,8 @@ public class EspecialidadeRepository : IEspecialidadeRepository
         await connection.OpenAsync();
 
         var sql = @"
-            INSERT INTO Especialidade (IdEspecialidade, Nome, Descricao, DataCriacao, IndAtivo)
-            VALUES (@IdEspecialidade, @Nome, @Descricao, @DataCriacao, @IndAtivo)";
-
-        await connection.ExecuteAsync(sql, especialidade);
-        return especialidade;
-    }
-
-    public async Task<Especialidade> UpdateAsync(Especialidade especialidade)
-    {
-        using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
-
-        var sql = @"
-            UPDATE Especialidade
-            SET Nome = @Nome,
-                Descricao = @Descricao
-            WHERE IdEspecialidade = @IdEspecialidade AND IndAtivo = 1";
+            INSERT INTO Especialidade (EspecialidadeId, Nome, Descricao, DataCriacao, IndAtivo)
+            VALUES (@EspecialidadeId, @Nome, @Descricao, @DataCriacao, @IndAtivo)";
 
         await connection.ExecuteAsync(sql, especialidade);
         return especialidade;

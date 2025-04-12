@@ -67,7 +67,7 @@ public class AutenticacaoService(IUsuarioRepository _usuarioRepository, IMedicoR
     {
         var medico = await _medicoRepository.ObterPorCrmAsync(request.CRM) ?? throw new UnauthorizedAccessException("CRM ou senha inválidos");
 
-        var usuario = await _usuarioRepository.ObterPorIdAsync(medico.IdUsuario) ?? throw new UnauthorizedAccessException("Usuário não encontrado");
+        var usuario = await _usuarioRepository.ObterPorIdAsync(medico.UsuarioId) ?? throw new UnauthorizedAccessException("Usuário não encontrado");
 
         if (!usuario.ValidaSenha(request.Senha))
         {
@@ -101,7 +101,7 @@ public class AutenticacaoService(IUsuarioRepository _usuarioRepository, IMedicoR
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.NameId, usuario.UsuarioId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, usuario.Email),
             new Claim(JwtRegisteredClaimNames.Name, usuario.Nome),
             new Claim(ClaimTypes.Role, usuario.TipoUsuario.ToString()),
@@ -165,7 +165,7 @@ public class AutenticacaoService(IUsuarioRepository _usuarioRepository, IMedicoR
             ?? throw new KeyNotFoundException($"Usuário com email {email} não encontrado");
 
         return new PessoaResponse(
-            usuario.Id,
+            usuario.UsuarioId,
             usuario.Nome,
             usuario.Email,
             usuario.CPF,

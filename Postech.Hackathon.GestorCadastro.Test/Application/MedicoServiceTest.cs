@@ -28,7 +28,7 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            IdEspecialidade = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid()
         };
         
         _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
@@ -40,7 +40,7 @@ public class MedicoServiceTest
         // Assert
         Assert.NotNull(resultado);
         Assert.Equal(request.CRM, resultado.CRM);
-        Assert.Equal(request.IdEspecialidade, resultado.IdEspecialidade);
+        Assert.Equal(request.EspecialidadeId, resultado.IdEspecialidade);
         _mockMedicoRepository.Verify(x => x.CreateAsync(It.IsAny<Medico>()), Times.Once);
     }
     
@@ -52,13 +52,13 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            IdEspecialidade = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid()
         };
         
         var medicoExistente = new Medico(
             request.CRM,
             Guid.NewGuid(),
-            request.IdEspecialidade);
+            request.EspecialidadeId);
         
         _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
             .ReturnsAsync(medicoExistente);
@@ -76,7 +76,7 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            IdEspecialidade = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid()
         };
         
         var medicoExistente = new Medico(
@@ -96,7 +96,7 @@ public class MedicoServiceTest
         // Assert
         Assert.NotNull(resultado);
         Assert.Equal(request.CRM, resultado.CRM);
-        Assert.Equal(request.IdEspecialidade, resultado.IdEspecialidade);
+        Assert.Equal(request.EspecialidadeId, resultado.IdEspecialidade);
         _mockMedicoRepository.Verify(x => x.UpdateAsync(It.IsAny<Medico>()), Times.Once);
     }
     
@@ -108,7 +108,7 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            IdEspecialidade = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid()
         };
         
         _mockMedicoRepository.Setup(x => x.ObterPorIdAsync(idUsuario))
@@ -127,7 +127,7 @@ public class MedicoServiceTest
         var request = new MedicoRequest 
         { 
             CRM = "123456",
-            IdEspecialidade = Guid.NewGuid()
+            EspecialidadeId = Guid.NewGuid()
         };
         
         var medicoExistente = new Medico(
@@ -138,7 +138,7 @@ public class MedicoServiceTest
         var outroMedico = new Medico(
             request.CRM,
             Guid.NewGuid(),
-            request.IdEspecialidade);
+            request.EspecialidadeId);
         
         _mockMedicoRepository.Setup(x => x.ObterPorIdAsync(idUsuario))
             .ReturnsAsync(medicoExistente);

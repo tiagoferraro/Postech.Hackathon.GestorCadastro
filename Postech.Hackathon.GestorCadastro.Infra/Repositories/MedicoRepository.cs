@@ -2,7 +2,6 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using Postech.Hackathon.GestorCadastro.Domain.Entities;
-using Postech.Hackathon.GestorCadastro.Domain.Settings;
 using Postech.Hackathon.GestorCadastro.Infra.Interfaces;
 
 namespace Postech.Hackathon.GestorCadastro.Infra.Repositories;
@@ -11,22 +10,19 @@ public class MedicoRepository : IMedicoRepository
 {
     private readonly string _connectionString;
 
-    public MedicoRepository(IOptions<DatabaseSettings> dbSettings)
-    {
-        _connectionString = dbSettings.Value.ConnectionString;
-    }
+    public MedicoRepository(IOptions<DatabaseSettings> dbSettings) => _connectionString = dbSettings.Value.ConnectionString;
 
-    public async Task<Medico?> ObterPorIdAsync(Guid id)
+    public async Task<Medico?> ObterPorIdAsync(Guid medicoId)
     {
         using var connection = new SqlConnection(_connectionString);
-        const string sql = "SELECT * FROM Medicos WHERE IdMedico = @Id";
-        return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { Id = id });
+        const string sql = "SELECT * FROM Medico WHERE MedicoId = @MedicoId";
+        return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { @MedicoId = medicoId });
     }
 
     public async Task<Medico?> ObterPorCrmAsync(string crm)
     {
         using var connection = new SqlConnection(_connectionString);
-        const string sql = "SELECT * FROM Medicos WHERE CRM = @CRM";
+        const string sql = "SELECT * FROM Medico WHERE CRM = @CRM";
         return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { CRM = crm });
     }
 
@@ -34,9 +30,9 @@ public class MedicoRepository : IMedicoRepository
     {
         using var connection = new SqlConnection(_connectionString);
         const string sql = @"
-            INSERT INTO Medicos (IdMedico, IdUsuario, IdEspecialidade, CRM)
-            VALUES (@IdMedico, @IdUsuario, @IdEspecialidade, @CRM);
-            SELECT * FROM Medicos WHERE IdMedico = @IdMedico";
+            INSERT INTO Medico (MedicoId, UsuarioID , EspecialidadeId, CRM)
+            VALUES (@MedicoId,  @UsuarioID , @EspecialidadeId, @CRM);
+            SELECT * FROM Medico WHERE MedicoId = @MedicoId";
         
         return await connection.QueryFirstAsync<Medico>(sql, medico);
     }
@@ -45,11 +41,11 @@ public class MedicoRepository : IMedicoRepository
     {
         using var connection = new SqlConnection(_connectionString);
         const string sql = @"
-            UPDATE Medicos 
+            UPDATE Medico
             SET CRM = @CRM, 
-                IdEspecialidade = @IdEspecialidade
-            WHERE IdMedico = @IdMedico;
-            SELECT * FROM Medicos WHERE IdMedico = @IdMedico";
+                EspecialidadeId = @EspecialidadeId
+            WHERE MedicoId = @MedicoId;
+            SELECT * FROM Medico WHERE MedicoId = @MedicoId";
         
         return await connection.QueryFirstAsync<Medico>(sql, medico);
     }

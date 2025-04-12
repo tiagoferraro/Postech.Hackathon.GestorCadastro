@@ -2,7 +2,6 @@
 using Postech.Hackathon.GestorCadastro.Application.DTO.Response;
 using Postech.Hackathon.GestorCadastro.Application.Interfaces.Services;
 using Postech.Hackathon.GestorCadastro.Domain.Entities;
-using Postech.Hackathon.GestorCadastro.Domain.Settings;
 using Postech.Hackathon.GestorCadastro.Domain.Enum;
 using Postech.Hackathon.GestorCadastro.Infra.Interfaces;
 using System;
@@ -38,7 +37,12 @@ public class PessoaService : IPessoaService
             throw new InvalidOperationException("CPF já está em uso");
         }
 
-        var usuario = new Usuario(
+        if (request.TipoUsuario == ETipoUsuario.Medico && request.Medico == null)
+        {
+            throw new InvalidOperationException("Dados do médico são obrigatórios para o tipo de usuário 'Médico'");
+        }
+
+            var usuario = new Usuario(
              request.Nome,
              request.Email,
              request.Senha,
@@ -50,13 +54,14 @@ public class PessoaService : IPessoaService
 
         MedicoResponse? medicoResponse = null;
 
-        if (request.TipoUsuario == ETipoUsuario.Medico && request.Medico != null)
+        if (request.TipoUsuario == ETipoUsuario.Medico && request.Medico is not null)
         {
-            medicoResponse = await _medicoService.CadastrarAsync(usuario.Id, request.Medico);
+            medicoResponse = await _medicoService.CadastrarAsync(usuario.UsuarioId, request.Medico);
         }
+                   
 
         return new PessoaResponse(
-            Id: usuario.Id,
+            Id: usuario.UsuarioId,
             Nome: usuario.Nome,
             Email: usuario.Email,
             CPF: usuario.CPF,
@@ -72,15 +77,21 @@ public class PessoaService : IPessoaService
         var usuario = await _usuarioRepository.ObterPorIdAsync(request.Id) ?? throw new KeyNotFoundException($"Usuário com ID {request.Id} não encontrado");
 
         var existingUserByEmail = await _usuarioRepository.ObterPorEmailAsync(request.Email);
-        if (existingUserByEmail != null && existingUserByEmail.Id != request.Id)
+        if (existingUserByEmail != null && existingUserByEmail.UsuarioId != request.Id)
         {
             throw new InvalidOperationException("Email já está em uso");
         }
 
         var existingUserByCpf = await _usuarioRepository.ObterPorCpfAsync(request.CPF);
-        if (existingUserByCpf != null && existingUserByCpf.Id != request.Id)
+        if (existingUserByCpf != null && existingUserByCpf.UsuarioId != request.Id)
         {
             throw new InvalidOperationException("CPF já está em uso");
+        }
+
+
+        if (request.TipoUsuario == ETipoUsuario.Medico && request.Medico == null)
+        {
+            throw new InvalidOperationException("Dados do médico são obrigatórios para o tipo de usuário 'Médico'");
         }
 
         usuario.AtualizarDados(request.Nome, request.Email, request.Senha, request.CPF, request.TipoUsuario);
@@ -90,11 +101,11 @@ public class PessoaService : IPessoaService
 
         if (request.TipoUsuario == ETipoUsuario.Medico && request.Medico != null)
         {
-            medicoResponse = await _medicoService.AlterarAsync(usuario.Id, request.Medico);
+            medicoResponse = await _medicoService.AlterarAsync(usuario.UsuarioId, request.Medico);
         }
 
         return new PessoaResponse(
-            Id: usuario.Id,
+            Id: usuario.UsuarioId,
             Nome: usuario.Nome,
             Email: usuario.Email,
             CPF: usuario.CPF,

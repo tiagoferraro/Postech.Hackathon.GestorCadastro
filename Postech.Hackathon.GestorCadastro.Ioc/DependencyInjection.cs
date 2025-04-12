@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Postech.Hackathon.GestorCadastro.Application.Interfaces.Services;
 using Postech.Hackathon.GestorCadastro.Application.Services;
 using Postech.Hackathon.GestorCadastro.Domain.Settings;
+using Postech.Hackathon.GestorCadastro.Infra;
 using Postech.Hackathon.GestorCadastro.Infra.Interfaces;
 using Postech.Hackathon.GestorCadastro.Infra.Repositories;
 

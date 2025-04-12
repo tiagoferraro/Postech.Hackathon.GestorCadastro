@@ -41,13 +41,4 @@ public class EspecialidadeController(IEspecialidadeService _especialidadeService
         return CreatedAtAction(nameof(ObterPorId), new { id = especialidade.IdEspecialidade }, especialidade);
     }
 
-    [HttpPut("{id}")]
-    [Authorize]
-    [ProducesResponseType(typeof(EspecialidadeResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Atualizar(Guid id, [FromBody] AtualizarEspecialidadeRequest request)
-    {
-        var especialidade = await _especialidadeService.AtualizarAsync(id, request.Nome, request.Descricao);
-        return Ok(especialidade);
-    }
 } 

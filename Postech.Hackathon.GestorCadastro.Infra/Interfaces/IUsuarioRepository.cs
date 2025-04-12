@@ -8,5 +8,5 @@ public interface IUsuarioRepository
     Task<Usuario?> ObterPorEmailAsync(string email);
     Task<Usuario?> ObterPorCpfAsync(string cpf);
     Task<Usuario> CreateAsync(Usuario usuario);
-    Task<Usuario> UpdateAsync(Usuario usuario);
+    Task<Usuario> UpdateAsync(Usuario usuario); 
 }
