@@ -1,6 +1,10 @@
-# Postech.Hackathon.Agenda
+# Postech.Hackathon.GestorCadastro
 
-Sistema de gerenciamento de agenda desenvolvido durante o Hackathon da Postech.
+Sistema de gerenciamento de cadastro desenvolvido durante o Hackathon da Postech.
+
+## Descrição
+
+O Gestor de Cadastro é uma aplicação desenvolvida para gerenciar cadastros de forma eficiente e segura, seguindo as melhores práticas de desenvolvimento e arquitetura de software.
 
 ## Estrutura do Projeto
 
@@ -14,21 +18,29 @@ O projeto está organizado nas seguintes camadas:
 - **Test**: Projeto de testes unitários
 - **TestIntegration**: Projeto de testes de integração
 
-## Tecnologias Utilizadas
+## Estrutura da API
 
-- .NET 7.0
-- ASP.NET Core
-- Entity Framework Core
-- xUnit
-- Docker
+A API segue o padrão RESTful e está organizada da seguinte forma:
 
-## Como Executar
+### Endpoints Principais
 
-1. Clone o repositório
-2. Execute `dotnet restore`
-3. Execute `dotnet build`
-4. Execute `dotnet run --project Postech.Hackathon.Agenda.Api`
+#### Autenticação
+- `POST /api/Autenticador/login` - Login com email e senha
+- `POST /api/Autenticador/login/cpf` - Login com CPF
+- `POST /api/Autenticador/login/crm` - Login com CRM
+- `GET /api/Autenticador/ValidarToken` - Validação de token
+- `GET /api/Autenticador/DadosUsuarioLogado` - Obter dados do usuário logado
+- `POST /api/Autenticador/alterar-senha` - Alterar senha do usuário
 
-## Como Executar os Testes
+#### Cadastro de Pessoas
+- `POST /api/Pessoa/Cadastrar` - Cadastrar nova pessoa
+- `PUT /api/Pessoa/Alterar` - Alterar dados de uma pessoa
 
-Execute `dotnet test` na raiz do projeto para executar todos os testes.
+#### Especialidades
+- `GET /api/Especialidade` - Lista todas as especialidades
+- `GET /api/Especialidade/{id}` - Obtém detalhes de uma especialidade específica
+- `POST /api/Especialidade` - Cria uma nova especialidade
+
+#### Médicos
+- `GET /api/Medico/PorEspecialidade/{especialidadeId}` - Lista médicos por especialidade
+
