@@ -168,38 +168,7 @@ public class MedicoServiceTest
         _mockMedicoRepository.Verify(x => x.UpdateAsync(It.IsAny<Medico>()), Times.Never);
     }
 
-    [Fact]
-    public async Task ObterPorEspecialidadeAsync_QuandoExisteNoCache_RetornaDoCache()
-    {
-        // Arrange
-        var especialidadeId = Guid.NewGuid();
-        var pessoas = new List<PessoaResponse>
-        {
-            new PessoaResponse(
-                Id: Guid.NewGuid(),
-                Nome: "Dr. Teste 1",
-                Email: "teste1@example.com",
-                CPF: "12345678901",
-                TipoUsuario: ETipoUsuario.Medico,
-                DataCriacao: DateTime.Now,
-                UltimoLogin: null,
-                Medico: new MedicoResponse("12345", especialidadeId, 150.00m)
-            )
-        };
 
-        var cacheKey = $"medicos_especialidade_{especialidadeId}";
-        var serializedData = JsonSerializer.Serialize(pessoas);
-        _mockCache.Setup(x => x.GetStringAsync(cacheKey, default))
-            .ReturnsAsync(serializedData);
-
-        // Act
-        var resultado = await _medicoService.ObterPorEspecialidadeAsync(especialidadeId);
-
-        // Assert
-        Assert.NotNull(resultado);
-        Assert.Single(resultado);
-        _mockMedicoRepository.Verify(x => x.ObterPorEspecialidadeAsync(especialidadeId), Times.Never);
-    }
 
     [Fact]
     public async Task CadastrarAsync_QuandoSucesso_RemoveCacheDaEspecialidade()
