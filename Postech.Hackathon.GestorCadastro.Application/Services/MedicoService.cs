@@ -1,9 +1,10 @@
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 using Postech.Hackathon.GestorCadastro.Application.DTO.Request;
 using Postech.Hackathon.GestorCadastro.Application.DTO.Response;
 using Postech.Hackathon.GestorCadastro.Application.Interfaces.Services;
 using Postech.Hackathon.GestorCadastro.Domain.Entities;
 using Postech.Hackathon.GestorCadastro.Infra.Interfaces;
+using System.Text.Json;
 
 namespace Postech.Hackathon.GestorCadastro.Application.Services;
 
@@ -11,14 +12,14 @@ public class MedicoService : IMedicoService
 {
     private readonly IMedicoRepository _medicoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IMemoryCache _cache;
+    private readonly IDistributedCache _cache;
     private const string CACHE_KEY_PREFIX = "medicos_especialidade_";
     private static readonly TimeSpan CACHE_EXPIRATION = TimeSpan.FromMinutes(30);
 
     public MedicoService(
         IMedicoRepository medicoRepository, 
         IUsuarioRepository usuarioRepository,
-        IMemoryCache cache)
+        IDistributedCache cache)
     {
         _medicoRepository = medicoRepository;
         _usuarioRepository = usuarioRepository;
@@ -37,7 +38,7 @@ public class MedicoService : IMedicoService
         await _medicoRepository.CreateAsync(medico);
 
         // Invalida o cache para a especialidade
-        _cache.Remove($"{CACHE_KEY_PREFIX}{request.EspecialidadeId}");
+        await _cache.RemoveAsync($"{CACHE_KEY_PREFIX}{request.EspecialidadeId}");
 
         return new MedicoResponse(medico.CRM, medico.EspecialidadeId, medico.ValorConsulta);
     }
@@ -56,8 +57,8 @@ public class MedicoService : IMedicoService
         await _medicoRepository.UpdateAsync(medico);
 
         // Invalida o cache para a especialidade antiga e nova
-        _cache.Remove($"{CACHE_KEY_PREFIX}{medico.EspecialidadeId}");
-        _cache.Remove($"{CACHE_KEY_PREFIX}{request.EspecialidadeId}");
+        await _cache.RemoveAsync($"{CACHE_KEY_PREFIX}{medico.EspecialidadeId}");
+        await _cache.RemoveAsync($"{CACHE_KEY_PREFIX}{request.EspecialidadeId}");
 
         return new MedicoResponse(request.CRM, request.EspecialidadeId, request.ValorConsulta);
     }
@@ -67,9 +68,10 @@ public class MedicoService : IMedicoService
         var cacheKey = $"{CACHE_KEY_PREFIX}{especialidadeId}";
         
         // Tenta obter do cache
-        if (_cache.TryGetValue(cacheKey, out IEnumerable<PessoaResponse>? cachedPessoas))
+        var cachedData = await _cache.GetStringAsync(cacheKey);
+        if (cachedData != null)
         {
-            return cachedPessoas ?? Enumerable.Empty<PessoaResponse>();
+            return JsonSerializer.Deserialize<IEnumerable<PessoaResponse>>(cachedData) ?? Enumerable.Empty<PessoaResponse>();
         }
 
         var medicos = await _medicoRepository.ObterPorEspecialidadeAsync(especialidadeId);
@@ -95,11 +97,15 @@ public class MedicoService : IMedicoService
         }
 
         // Armazena no cache
-        var cacheOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(CACHE_EXPIRATION)
-            .SetPriority(CacheItemPriority.Normal);
+        var cacheOptions = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = CACHE_EXPIRATION
+        };
 
-        _cache.Set(cacheKey, pessoas, cacheOptions);
+        await _cache.SetStringAsync(
+            cacheKey,
+            JsonSerializer.Serialize(pessoas),
+            cacheOptions);
 
         return pessoas;
     }

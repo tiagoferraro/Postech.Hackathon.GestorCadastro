@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 using Moq;
 using Postech.Hackathon.GestorCadastro.Application.DTO.Request;
 using Postech.Hackathon.GestorCadastro.Application.DTO.Response;
@@ -7,6 +7,7 @@ using Postech.Hackathon.GestorCadastro.Domain.Entities;
 using Postech.Hackathon.GestorCadastro.Domain.Enum;
 using Postech.Hackathon.GestorCadastro.Infra.Interfaces;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,15 +17,15 @@ public class MedicoServiceTest
 {
     private readonly Mock<IMedicoRepository> _mockMedicoRepository;
     private readonly Mock<IUsuarioRepository> _mockUsuarioRepository;
-    private readonly IMemoryCache _memoryCache;
+    private readonly Mock<IDistributedCache> _mockCache;
     private readonly MedicoService _medicoService;
     
     public MedicoServiceTest()
     {
         _mockMedicoRepository = new Mock<IMedicoRepository>();
         _mockUsuarioRepository = new Mock<IUsuarioRepository>();
-        _memoryCache = new MemoryCache(new MemoryCacheOptions());
-        _medicoService = new MedicoService(_mockMedicoRepository.Object, _mockUsuarioRepository.Object, _memoryCache);
+        _mockCache = new Mock<IDistributedCache>();
+        _medicoService = new MedicoService(_mockMedicoRepository.Object, _mockUsuarioRepository.Object, _mockCache.Object);
     }
 
     [Fact]
@@ -187,7 +188,9 @@ public class MedicoServiceTest
         };
 
         var cacheKey = $"medicos_especialidade_{especialidadeId}";
-        _memoryCache.Set(cacheKey, pessoas);
+        var serializedData = JsonSerializer.Serialize(pessoas);
+        _mockCache.Setup(x => x.GetStringAsync(cacheKey, default))
+            .ReturnsAsync(serializedData);
 
         // Act
         var resultado = await _medicoService.ObterPorEspecialidadeAsync(especialidadeId);
@@ -212,8 +215,6 @@ public class MedicoServiceTest
         };
 
         var cacheKey = $"medicos_especialidade_{especialidadeId}";
-        _memoryCache.Set(cacheKey, new List<PessoaResponse>());
-
         _mockMedicoRepository.Setup(x => x.ObterPorCrmAsync(request.CRM))
             .ReturnsAsync(null as Medico);
 
@@ -221,8 +222,6 @@ public class MedicoServiceTest
         await _medicoService.CadastrarAsync(idUsuario, request);
 
         // Assert
-        Assert.False(_memoryCache.TryGetValue(cacheKey, out _));
+        _mockCache.Verify(x => x.RemoveAsync(cacheKey, default), Times.Once);
     }
-
- 
 } 
